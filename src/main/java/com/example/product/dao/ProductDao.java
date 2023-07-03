@@ -1,0 +1,18 @@
+package com.example.product.dao;
+
+import com.example.product.model.Product;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface ProductDao {
+    public List<Product> selectAllProducts();
+    public Optional<Product> selectProductById(Integer productId);
+    public void insertProduct(Product product);
+
+    public boolean existsProductById(Integer productId);
+    public void deleteProductById(Integer productId);
+    public void updateProduct(Product newProduct);
+
+
+}
