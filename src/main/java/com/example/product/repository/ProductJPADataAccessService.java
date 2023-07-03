@@ -40,6 +40,8 @@ public class ProductJPADataAccessService implements ProductDao {
     }
 
 
+
+
     @Override
     public void deleteProductById(Integer productId) {
         productRepository.deleteById(productId);
@@ -50,5 +52,15 @@ public class ProductJPADataAccessService implements ProductDao {
     public void updateProduct(Product newProduct) {
         productRepository.save(newProduct);
 
+    }
+
+    @Override
+    public boolean existsProductByCode(String code) {
+        return productRepository.existsProductByCode(code);
+    }
+
+    @Override
+    public boolean existsProductByName(String name) {
+        return productRepository.existsProductByName(name);
     }
 }

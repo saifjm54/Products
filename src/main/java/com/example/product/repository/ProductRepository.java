@@ -9,4 +9,6 @@ import java.util.Optional;
 
 @Transactional
 public interface ProductRepository extends JpaRepository<Product,Integer> {
+    public boolean existsProductByCode(String code);
+    public boolean existsProductByName(String name);
 }

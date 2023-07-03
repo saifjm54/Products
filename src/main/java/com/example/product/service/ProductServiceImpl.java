@@ -2,6 +2,7 @@ package com.example.product.service;
 
 import com.example.product.dao.ProductDao;
 import com.example.product.dto.ProductDTOMapper;
+import com.example.product.dto.ProductRequest;
 import com.example.product.exception.RequestException;
 import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.model.Product;
@@ -31,7 +32,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void addProduct(Product product) {
+    public void addProduct(ProductRequest productRequest) {
+        Product product = new Product();
+        product.setCode(productRequest.code());
+        product.setName(productRequest.name());
         repository.insertProduct(product);
     }
 
@@ -49,15 +53,15 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void updateProduct(Integer productId, Product update) {
+    public void updateProduct(Integer productId, ProductRequest update) {
         Product product = repository.selectProductById(productId).orElseThrow(() -> new ResourceNotFoundException("product with id [%s] not found".formatted(productId)));
         boolean changes = false;
-        if (update.getName() !=null && !update.getName().equals(product.getName())){
-            product.setName(update.getName());
+        if (update.name() !=null && !update.name().equals(product.getName())){
+            product.setName(update.name());
             changes = true;
         }
-        if(update.getCode() != null && !update.getCode().equals(product.getCode())){
-            product.setCode(update.getCode());
+        if(update.code() != null && !update.code().equals(product.getCode())){
+            product.setCode(update.code());
             changes = true;
         }
         if(!changes){

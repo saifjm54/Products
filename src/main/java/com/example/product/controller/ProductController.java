@@ -6,6 +6,7 @@ import com.example.product.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,15 +31,26 @@ public class ProductController {
     public Product getProduct(@PathVariable("productId") Integer productId){
         return productService.getProduct(productId);
     }
-    /*@PostMapping
-    public ResponseEntity<Product> addProduct(
+    @PostMapping
+    public ResponseEntity<Object> addProduct(
             @RequestBody ProductRequest request
             ){
         productService.addProduct(request);
-    }*/
-
-
-
+        return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+    }
+    @DeleteMapping("{productId}")
+    public ResponseEntity<Object> deleteProduct(
+            @PathVariable("productId") Integer productId){
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>("Product is deleted successfully",HttpStatus.NO_CONTENT);
+    }
+    @PutMapping("{productId}")
+    public ResponseEntity<Object> updateProduct(
+            @PathVariable("productId") Integer productId,
+            @RequestBody ProductRequest productRequest){
+        productService.updateProduct(productId,productRequest);
+        return new ResponseEntity<>("Product is updated successsfully",HttpStatus.OK);
+    }
 
 
 }

@@ -14,5 +14,8 @@ public interface ProductDao {
     public void deleteProductById(Integer productId);
     public void updateProduct(Product newProduct);
 
+    public boolean existsProductByCode(String code);
+    public boolean existsProductByName(String name);
+
 
 }
