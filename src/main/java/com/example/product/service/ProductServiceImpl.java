@@ -1,6 +1,7 @@
 package com.example.product.service;
 
 import com.example.product.dao.ProductDao;
+import com.example.product.dto.ProductDTO;
 import com.example.product.dto.ProductDTOMapper;
 import com.example.product.dto.ProductRequest;
 import com.example.product.exception.RequestException;
@@ -8,35 +9,40 @@ import com.example.product.exception.ResourceNotFoundException;
 import com.example.product.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
     private final ProductDao repository;
+    private final ProductDTOMapper productDTOMapper;
 
-
-    @Override
-    public List<Product> getAllProducts() {
-        return repository.selectAllProducts().stream().collect(Collectors.toList());
+    public ProductServiceImpl(@Qualifier("jdbc") ProductDao repository,ProductDTOMapper productDTOMapper) {
+        this.repository = repository;
+        this.productDTOMapper = productDTOMapper;
     }
 
     @Override
-    public Product getProduct(Integer productId) {
-        return repository.selectProductById(productId).orElseThrow(() -> new ResourceNotFoundException(
-                "product with id [%s] not found".formatted(productId)
-        ));
+    public List<ProductDTO> getAllProducts() {
+        return repository.selectAllProducts().stream().map(productDTOMapper).collect(Collectors.toList());
     }
-
     @Override
     public void addProduct(ProductRequest productRequest) {
         Product product = new Product();
         product.setCode(productRequest.code());
         product.setName(productRequest.name());
         repository.insertProduct(product);
+    }
+
+    @Override
+    public Optional<ProductDTO> getProduct(Integer productId) {
+        return Optional.ofNullable(repository.selectProductById(productId).map(productDTOMapper).orElseThrow(() -> new ResourceNotFoundException(
+                "product with id [%s] not found".formatted(productId)
+        )));
     }
 
     @Override

@@ -28,16 +28,6 @@ public class ProductServiceControllerTest extends AbstractTest{
         assertTrue(products.length > 0);
     }
     @Test
-    public void getProduct() throws Exception{
-        String uri = "/api/v1/products/2";
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-        int status = mvcResult.getResponse().getStatus();
-        assertEquals(200,status);
-        String content = mvcResult.getResponse().getContentAsString();
-        Product product = super.mapFromJson(content,Product.class);
-        assertTrue(product != null);
-    }
-    @Test
     public void addProduct() throws  Exception {
         String uri = "/api/v1/products";
         ProductRequest productRequest = new ProductRequest("EPARLOG","Epargne Logement");
@@ -52,8 +42,19 @@ public class ProductServiceControllerTest extends AbstractTest{
 
     }
     @Test
+    public void getProduct() throws Exception{
+        String uri = "/api/v1/products/7";
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        int status = mvcResult.getResponse().getStatus();
+        assertEquals(200,status);
+        String content = mvcResult.getResponse().getContentAsString();
+        Product product = super.mapFromJson(content,Product.class);
+        assertTrue(product != null);
+    }
+
+    @Test
     public void updateProduct() throws Exception {
-        String uri = "/api/v1/products/2";
+        String uri = "/api/v1/products/9";
         ProductRequest productRequest = new ProductRequest("EPARLOG","Eparagne");
         String inputjson = super.mapToJson(productRequest);
         MvcResult mvcResult =
@@ -65,7 +66,7 @@ public class ProductServiceControllerTest extends AbstractTest{
     }
     @Test
     public void deleteProduct() throws Exception {
-        String uri = "/api/v1/products/2";
+        String uri = "/api/v1/products/10";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
         int status = mvcResult.getResponse().getStatus();
         assertEquals(204,status);

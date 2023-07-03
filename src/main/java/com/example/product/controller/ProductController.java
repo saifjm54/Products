@@ -1,8 +1,10 @@
 package com.example.product.controller;
 
+import com.example.product.dto.ProductDTO;
 import com.example.product.dto.ProductRequest;
 import com.example.product.model.Product;
 import com.example.product.service.ProductService;
+import com.example.product.service.ProductServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getProducts()
+    public List<ProductDTO> getProducts()
     {
         return productService.getAllProducts();
     }
     @GetMapping("{productId}")
-    public Product getProduct(@PathVariable("productId") Integer productId){
-        return productService.getProduct(productId);
+    public ResponseEntity<Object> getProduct(@PathVariable("productId") Integer productId){
+        return new ResponseEntity<>(productService.getProduct(productId),HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Object> addProduct(
